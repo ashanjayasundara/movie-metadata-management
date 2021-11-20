@@ -4,6 +4,8 @@ services:
     build:
       context: .
     image: ashanust/movie-metadata-management
+    depends_on:
+      - mysql
     networks:
       - frontend
       - backend
