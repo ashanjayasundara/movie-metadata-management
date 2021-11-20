@@ -1,0 +1,158 @@
+Welcome to Movie Matadata Management System!
+-------------------------------------------
+
+Set up OTT, VOD, or live video streaming and broadcasting platforms with ease, with a modular video platform solution for driving your video processing, management, and provisioning workflows.
+
+Our solution offers the right mix of build and buy, with managed and open-source services that eliminate setup, customization, and future development challenges. The cloud-based setup provides you the scalability of reaching millions of viewers without any worry.
+
+Why we are unique?
+~~~~~~~~~~~~~~~~~
+
+Movie Matadata Management System is a leading service provider in Video meta data management system with providing highest level of security and integrity and also provide bulk meta data processing functionality.
+
+To learn more, visit
+https://github.com/ashanjayasundara/movie-metadata-management/[Movie Matadata Management System].
+
+User Management
+~~~~~~~~~~~~~~~
+The has implemented with authentication and authorization mechanism which is grant user actions based on their previlidge. ADMIN is a highest previledge level of the system. 
+
+.user data
+[options="header"]
+|=======================
+|Field|Constraint
+|username   |unique requied field with 4-20 characters     
+|password   |requied field with 4-20 characters  
+|role    |users adminstrative previledge (**ADMIN,USER,GUEST**)
+|=======================
+
+Authenticate User
+~~~~~~~~~~~~~~~~~
+Users are needed for logging to the system of their registered username and password to consume the privileged services. Once the user successfully authenticated, they will receive a token which valid for 1 hour(system configuration) and to use the benefit of advance functionalities,Each API call should attach the received token in the header section in each API request.
+
+Login Reuest
+^^^^^^^^^^^
+[source,curl]
+-----------------
+curl --location --request POST 'http://localhost:5000/api/auth/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username":"admin",
+    "password":"user"
+}'
+-----------------
+
+Login Response (Success)
+^^^^^^^^^^^^^^^^^^^^^^^^
+[source,json]
+------------------
+{
+    "ruleCode": 200,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+}
+------------------
+Movie Management
+~~~~~~~~~~~~~~~
+Movie management is the major fuctionality of the system and which provide extra functionality based user's previledge levels. 
+
+Get All Movies Request
+^^^^^^^^^^^^^^^^^^^^^
+[options="header"]
+|=======================
+|Requirement|Description
+|Service EndPoint|**api/movie**
+|Request Type | **GET**
+|Content Type | **application/json**
+|Previledge | **N/A**
+|=======================
+
+[source,curl]
+-----------------
+curl --location --request GET 'http://localhost:5000/api/movie' \
+--header 'Content-Type: application/json' \
+--data-raw ''
+-----------------
+
+All Movies Response (Success)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[source,json]
+------------------
+[
+    {
+        "id": 1,
+        "title": "Machan",
+        "description": "Sinhala Full Movies",
+        "thumbnail": "https://www.axinom.com/media",
+        "releaseDate": null
+    },
+    {
+        "id": 2,
+        "title": "Machan 3",
+        "description": "Sinhala Full Movies",
+        "thumbnail": "https://www.axinom.com/media",
+        "releaseDate": null
+    },
+    {
+        "id": 3,
+        "title": "Machan 2",
+        "description": "Sinhala Full Movies",
+        "thumbnail": "https://www.axinom.com/media",
+        "releaseDate": null
+    }
+]
+------------------
+
+Process Bulk Movies Meta data Reuest
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The following service endpoint is defined to process a large number of movie details at once. The operator should attach the JSON formated file as follows. when the system completes the processing of the attachment user will receive a CSV formatted status file that contains the progress of each record. Each attachment will persist on the backend based on the day when it is uploaded.
+
+[options="header"]
+|=======================
+|Requirement|Description
+|Service EndPoint|**api/movie/upload-movies**
+|Request Type | **POST**
+|Content Type | **multipart/form-data;**
+|Headers | **auth : <token>**
+|Form-Data | **movie : <file Attachment>**
+|Previledge | **ADMIN**
+|=======================
+
+**Bulk Attachment File Description**
+|=======================
+|action|**ADD** : create new movie entries \| **UPDATE** : update existing movie entries \| **DELETE** : delete existing movie entries
+|movies| List of movie entries which are going to manipulate based on the action
+|=======================
+
+image:https://i.ibb.co/cxL7GMc/bulk-upload.png [alt="Bulk Attachment.",width=480,height=360]
+
+[source,curl]
+-----------------
+curl --location --request POST 'http://localhost:5000/api/movie/upload-movies' \
+--header 'auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' \
+--form 'movie=@"/C:/Users/ashan/Downloads/bulkData.json"'
+-----------------
+
+Movie Response (Success)
+^^^^^^^^^^^^^^^^^^^^^^^^
+user will receive a CSV formatted status file which contains the status of each processed entries.
+[source,json]
+------------------
+{
+    "status": 200,
+    "filePath": "./tmp/bulkUploads/2021/11/20/bulkData-status.csv"
+}
+------------------
+
+Deployment Procedure
+~~~~~~~~~~~~~~~~~~~~
+Entire application is deployed on containerise image and all required dependencies has wrapped with single container and by using following instruction we will able deploy the system.
+
+Pre-Requirements
+^^^^^^^^^^^^^^^^
+The server instance has setup with https://docs.docker.com/get-started/[Docker] and https://docs.docker.com/compose/install/[Docker-Composor]
+[source,bash]
+------------------
+docker pull ashanust/movie-metadata-management:latest
+docker-compose -f {compose file location} up
+------------------
+https://raw.githubusercontent.com/ashanjayasundara/movie-metadata-management/master/docker-compose.yml[sample composor file]

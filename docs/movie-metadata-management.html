@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Asciidoctor 1.5.4">
+  <title>Welcome to Movie Matadata Management System!</title>
+  <link rel="stylesheet" href="https://asciidoclive.com/assets/asciidoctor.js/css/asciidoctor.css">
+</head>
+
+<body class="article">
+  <div id="header">
+  </div>
+  <div id="content">
+    <div class="sect1">
+      <h2 id="_welcome_to_movie_matadata_management_system">Welcome to Movie Matadata Management System!</h2>
+      <div class="sectionbody">
+        <div class="paragraph">
+          <p>Set up OTT, VOD, or live video streaming and broadcasting platforms with
+            ease, with a modular video platform solution for driving your video processing,
+            management, and provisioning workflows.</p>
+        </div>
+        <div class="paragraph">
+          <p>Our solution offers the right mix of build and buy, with managed and open-source
+            services that eliminate setup, customization, and future development
+            challenges. The cloud-based setup provides you the scalability of reaching
+            millions of viewers without any worry.</p>
+        </div>
+        <div class="sect2">
+          <h3 id="_why_we_are_unique">Why we are unique?</h3>
+          <div class="paragraph">
+            <p>Movie Matadata Management System is a leading service provider in Video
+              meta data management system with providing highest level of security
+              and integrity and also provide bulk meta data processing functionality.</p>
+          </div>
+          <div class="paragraph">
+            <p>To learn more, visit
+              <a href="https://github.com/ashanjayasundara/movie-metadata-management/">Movie Matadata Management System</a>.</p>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_user_management">User Management</h3>
+          <div class="paragraph">
+            <p>The has implemented with authentication and authorization mechanism which
+              is grant user actions based on their previlidge. ADMIN is a highest
+              previledge level of the system.</p>
+          </div>
+          <table class="tableblock frame-all grid-all spread">
+            <caption class="title">Table 1. user data</caption>
+            <colgroup>
+              <col style="width: 50%;">
+              <col style="width: 50%;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="tableblock halign-left valign-top">Field</th>
+                <th class="tableblock halign-left valign-top">Constraint</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tableblock halign-left valign-top">
+                  <p class="tableblock">username</p>
+                </td>
+                <td class="tableblock halign-left valign-top">
+                  <p class="tableblock">unique requied field with 4-20 characters</p>
+                </td>
+              </tr>
+              <tr>
+                <td class="tableblock halign-left valign-top">
+                  <p class="tableblock">password</p>
+                </td>
+                <td class="tableblock halign-left valign-top">
+                  <p class="tableblock">requied field with 4-20 characters</p>
+                </td>
+              </tr>
+              <tr>
+                <td class="tableblock halign-left valign-top">
+                  <p class="tableblock">role</p>
+                </td>
+                <td class="tableblock halign-left valign-top">
+                  <p class="tableblock">users adminstrative previledge (<strong>ADMIN,USER,GUEST</strong>)</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sect2">
+          <h3 id="_authenticate_user">Authenticate User</h3>
+          <div class="paragraph">
+            <p>Users are needed for logging to the system of their registered username
+              and password to consume the privileged services. Once the user successfully
+              authenticated, they will receive a token which valid for 1 hour(system
+              configuration) and to use the benefit of advance functionalities,Each
+              API call should attach the received token in the header section in
+              each API request.</p>
+          </div>
+          <div class="sect3">
+            <h4 id="_login_reuest">Login Reuest</h4>
+            <div class="listingblock">
+              <div class="content">
+                <pre class="highlight"><code class="language-curl" data-lang="curl">curl --location --request POST 'http://localhost:5000/api/auth/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username":"admin",
+    "password":"user"
+}'</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="sect3">
+            <h4 id="_login_response_success">Login Response (Success)</h4>
+            <div class="listingblock">
+              <div class="content">
+                <pre class="highlight"><code class="language-json" data-lang="json">{
+    "ruleCode": 200,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_movie_management">Movie Management</h3>
+          <div class="paragraph">
+            <p>Movie management is the major fuctionality of the system and which provide
+              extra functionality based user&#8217;s previledge levels.</p>
+          </div>
+          <div class="sect3">
+            <h4 id="_get_all_movies_request">Get All Movies Request</h4>
+            <table class="tableblock frame-all grid-all spread">
+              <colgroup>
+                <col style="width: 50%;">
+                <col style="width: 50%;">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="tableblock halign-left valign-top">Requirement</th>
+                  <th class="tableblock halign-left valign-top">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Service EndPoint</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>api/movie</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Request Type</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>GET</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Content Type</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>application/json</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Previledge</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>N/A</strong></p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="listingblock">
+              <div class="content">
+                <pre class="highlight"><code class="language-curl" data-lang="curl">curl --location --request GET 'http://localhost:5000/api/movie' \
+--header 'Content-Type: application/json' \
+--data-raw ''</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="sect3">
+            <h4 id="_all_movies_response_success">All Movies Response (Success)</h4>
+            <div class="listingblock">
+              <div class="content">
+                <pre class="highlight"><code class="language-json" data-lang="json">[
+    {
+        "id": 1,
+        "title": "Machan",
+        "description": "Sinhala Full Movies",
+        "thumbnail": "https://www.axinom.com/media",
+        "releaseDate": null
+    },
+    {
+        "id": 2,
+        "title": "Machan 3",
+        "description": "Sinhala Full Movies",
+        "thumbnail": "https://www.axinom.com/media",
+        "releaseDate": null
+    },
+    {
+        "id": 3,
+        "title": "Machan 2",
+        "description": "Sinhala Full Movies",
+        "thumbnail": "https://www.axinom.com/media",
+        "releaseDate": null
+    }
+]</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="sect3">
+            <h4 id="_process_bulk_movies_meta_data_reuest">Process Bulk Movies Meta data Reuest</h4>
+            <div class="paragraph">
+              <p>The following service endpoint is defined to process a large number
+                of movie details at once. The operator should attach the JSON formated
+                file as follows. when the system completes the processing of the
+                attachment user will receive a CSV formatted status file that contains
+                the progress of each record. Each attachment will persist on the
+                backend based on the day when it is uploaded.</p>
+            </div>
+            <table class="tableblock frame-all grid-all spread">
+              <colgroup>
+                <col style="width: 50%;">
+                <col style="width: 50%;">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="tableblock halign-left valign-top">Requirement</th>
+                  <th class="tableblock halign-left valign-top">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Service EndPoint</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>api/movie/upload-movies</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Request Type</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>POST</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Content Type</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>multipart/form-data;</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Headers</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>auth : &lt;token&gt;</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Form-Data</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>movie : &lt;file Attachment&gt;</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">Previledge</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>ADMIN</strong></p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="paragraph">
+              <p><strong>Bulk Attachment File Description</strong></p>
+            </div>
+            <table class="tableblock frame-all grid-all spread">
+              <colgroup>
+                <col style="width: 50%;">
+                <col style="width: 50%;">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">action</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock"><strong>ADD</strong> : create new movie entries | <strong>UPDATE</strong>                      : update existing movie entries | <strong>DELETE</strong> :
+                      delete existing movie entries</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">movies</p>
+                  </td>
+                  <td class="tableblock halign-left valign-top">
+                    <p class="tableblock">List of movie entries which are going to manipulate based on
+                      the action</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="paragraph">
+              <p><span class="image"><img src="https://i.ibb.co/cxL7GMc/bulk-upload.png " alt="Bulk Attachment." width="480" height="360"></span></p>
+            </div>
+            <div class="listingblock">
+              <div class="content">
+                <pre class="highlight"><code class="language-curl" data-lang="curl">curl --location --request POST 'http://localhost:5000/api/movie/upload-movies' \
+--header 'auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' \
+--form 'movie=@"/C:/Users/ashan/Downloads/bulkData.json"'</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="sect3">
+            <h4 id="_movie_response_success">Movie Response (Success)</h4>
+            <div class="paragraph">
+              <p>user will receive a CSV formatted status file which contains the status
+                of each processed entries.</p>
+            </div>
+            <div class="listingblock">
+              <div class="content">
+                <pre class="highlight"><code class="language-json" data-lang="json">{
+    "status": 200,
+    "filePath": "./tmp/bulkUploads/2021/11/20/bulkData-status.csv"
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_deployment_procedure">Deployment Procedure</h3>
+          <div class="paragraph">
+            <p>Entire application is deployed on containerise image and all required
+              dependencies has wrapped with single container and by using following
+              instruction we will able deploy the system.</p>
+          </div>
+          <div class="sect3">
+            <h4 id="_pre_requirements">Pre-Requirements</h4>
+            <div class="paragraph">
+              <p>The server instance has setup with <a href="https://docs.docker.com/get-started/">Docker</a>                and <a href="https://docs.docker.com/compose/install/">Docker-Composor</a></p>
+            </div>
+            <div class="listingblock">
+              <div class="content">
+                <pre class="highlight"><code class="language-bash" data-lang="bash">docker pull ashanust/movie-metadata-management:latest
+docker-compose -f {compose file location} up</code></pre>
+              </div>
+            </div>
+            <div class="paragraph">
+              <p><a href="https://raw.githubusercontent.com/ashanjayasundara/movie-metadata-management/master/docker-compose.yml">sample composor file</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
