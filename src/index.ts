@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {createConnection} from "typeorm";
-import express = require("express");
+import fileUpload from 'express-fileupload';
 import * as dotenv from 'dotenv';
 import * as bodyParser from "body-parser";
 import helmet from "helmet";
@@ -8,6 +8,10 @@ import cors from "cors";
 import routes from "./routes";
 import {errorHandler} from "./middleware/error.middleware";
 import {notFoundHandler} from "./middleware/not-found.middleware";
+import {makeDirectory} from "./utils";
+import express = require("express");
+
+makeDirectory('./tmp/bulkUploads');
 
 dotenv.config();
 if (!process.env.SERVER_PORT)
@@ -18,10 +22,11 @@ const SERVER_PORT: number = parseInt(process.env.SERVER_PORT);
 createConnection()
     .then(async connection => {
         const application = express();
-
+        application.use(fileUpload({createParentPath: true}));
         application.use(cors());
         application.use(helmet());
         application.use(bodyParser.json());
+        application.use(bodyParser.urlencoded({extended: true}));
 
         application.use("/api", routes);
 

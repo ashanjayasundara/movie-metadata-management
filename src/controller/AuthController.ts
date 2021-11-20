@@ -5,13 +5,14 @@ import {validate} from "class-validator";
 
 import {User} from "../entity/User";
 import {jwtSecret as Secret} from "../configs";
+import {HttpResponseCodes} from "../utils";
 
 
 export default class AuthController {
     static login = async (req: Request, res: Response) => {
         let {username, password} = req.body;
         if (!(username && password)) {
-            res.status(400).send();
+            res.status(HttpResponseCodes.NOT_FOUND).send();
         }
 
         const userRepository = getRepository(User);
@@ -19,12 +20,12 @@ export default class AuthController {
         try {
             user = await userRepository.findOneOrFail({where: {username: username}})
         } catch (error) {
-            res.status(401).send();
+            res.status(HttpResponseCodes.UNAUTHORIZED).send();
             return;
         }
 
         if (!user.checkIfUnencryptedPasswordIsValid(password)) {
-            res.status(401).send();
+            res.status(HttpResponseCodes.UNAUTHORIZED).send();
             return;
         }
 
@@ -34,7 +35,7 @@ export default class AuthController {
             {expiresIn: Secret.expire}
         );
 
-        res.status(200).send({ruleCode: 200, token: token});
+        res.status(HttpResponseCodes.SUCCESS).send({ruleCode: 200, token: token});
     };
 
     static changeUserPassword = async (req: Request, res: Response) => {
@@ -42,7 +43,7 @@ export default class AuthController {
 
         const {oldPassword, newPassword} = req.body;
         if (!(oldPassword && newPassword)) {
-            res.status(400).send();
+            res.status(HttpResponseCodes.BAD_REQUEST).send();
         }
 
         const userRepository = getRepository(User);
@@ -50,24 +51,24 @@ export default class AuthController {
         try {
             user = await userRepository.findOneOrFail(id);
         } catch (id) {
-            res.status(401).send();
+            res.status(HttpResponseCodes.UNAUTHORIZED).send();
             return;
         }
 
         if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
-            res.status(401).send();
+            res.status(HttpResponseCodes.UNAUTHORIZED).send();
             return;
         }
 
         user.password = newPassword;
         const errors = await validate(user);
         if (errors.length > 0) {
-            res.status(400).send(errors);
+            res.status(HttpResponseCodes.BAD_REQUEST).send(errors);
             return;
         }
         user.hashPassword();
         await userRepository.save(user);
 
-        res.status(204).send();
+        res.status(HttpResponseCodes.NO_CONTENT).send();
     };
 }

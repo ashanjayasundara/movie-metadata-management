@@ -13,7 +13,7 @@ router.get(
 );
 
 router.post("/", [checkToken, authorizeRequest(["ADMIN"])], MovieController.createMovie);
-
+router.post("/upload-movies",[checkToken, authorizeRequest(["ADMIN"])],  MovieController.handleBulkUpload);
 
 router.put("/",
     [checkToken, authorizeRequest(["ADMIN"])],

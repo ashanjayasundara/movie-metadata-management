@@ -3,6 +3,7 @@ import {getRepository} from "typeorm";
 import {validate} from "class-validator";
 
 import {User} from "../entity/User";
+import {HttpResponseCodes} from "../utils";
 
 export default class UserController {
 
@@ -11,7 +12,7 @@ export default class UserController {
         const users = await userRepository.find({
             select: ["id", "username", "role"]
         });
-        res.send(users);
+        res.status(HttpResponseCodes.SUCCESS).send(users);
     };
 
     static getUserById = async (req: Request, res: Response) => {
@@ -23,7 +24,7 @@ export default class UserController {
             });
             res.send(user);
         } catch (error) {
-            res.status(404).send("User not found");
+            res.status(HttpResponseCodes.NOT_FOUND).send("User not found");
         }
     };
 
@@ -36,7 +37,7 @@ export default class UserController {
 
         const errors = await validate(user);
         if (errors.length > 0) {
-            res.status(400).send(errors);
+            res.status(HttpResponseCodes.BAD_REQUEST).send(errors);
             return;
         }
         user.hashPassword();
@@ -45,10 +46,10 @@ export default class UserController {
         try {
             await userRepository.save(user);
         } catch (e) {
-            res.status(409).send("username already in use");
+            res.status(HttpResponseCodes.DUPLICATE_RECORD).send("username already in use");
             return;
         }
-        res.status(201).send("User created");
+        res.status(HttpResponseCodes.CREATED).send("User created");
     };
 
     static updateUser = async (req: Request, res: Response) => {
@@ -59,7 +60,7 @@ export default class UserController {
         try {
             user = await userRepository.findOneOrFail(userId);
         } catch (error) {
-            res.status(404).send("User not found");
+            res.status(HttpResponseCodes.NOT_FOUND).send("User not found");
             return;
         }
 
@@ -67,17 +68,17 @@ export default class UserController {
         user.role = role;
         const errors = await validate(user);
         if (errors.length > 0) {
-            res.status(400).send(errors);
+            res.status(HttpResponseCodes.BAD_REQUEST).send(errors);
             return;
         }
 
         try {
             await userRepository.save(user);
         } catch (e) {
-            res.status(409).send("username already in use");
+            res.status(HttpResponseCodes.DUPLICATE_RECORD).send("username already in use");
             return;
         }
-        res.status(204).send();
+        res.status(HttpResponseCodes.NO_CONTENT).send();
     };
 
     static deleteUser = async (req: Request, res: Response) => {
@@ -87,10 +88,10 @@ export default class UserController {
         try {
             user = await userRepository.findOneOrFail(id);
         } catch (error) {
-            res.status(404).send("User not found");
+            res.status(HttpResponseCodes.NOT_FOUND).send("User not found");
             return;
         }
         await userRepository.delete(id);
-        res.status(204).send();
+        res.status(HttpResponseCodes.NO_CONTENT).send();
     };
 }
