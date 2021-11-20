@@ -1,0 +1,47 @@
+version: "3.2"
+services:
+  nodejs:
+    build:
+      context: .
+    image: ashanust/movie-metadata-management
+    networks:
+      - frontend
+      - backend
+    environment:
+      - DB_HOST=movie-metadata-management-sql-app
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_SCHEME=axinoms
+      - DB_PORT=3306
+    volumes:
+      - ./www/:/var/www/html/
+    ports:
+      - "5000:5000"
+    container_name: movie-metadata-management-app
+  mysql:
+    image: mysql:5.7
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=axinoms
+    container_name: movie-metadata-management-sql-app
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "5001:80"
+    environment:
+      - PMA_HOST=movie-metadata-management-sql-app
+      - PMA_PORT= 3306
+    volumes:
+      - /sessions
+    container_name: movie-metadata-management-phpmyadmin-app
+networks:
+  frontend:
+  backend:
