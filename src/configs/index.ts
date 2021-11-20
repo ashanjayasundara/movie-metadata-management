@@ -1,7 +1,10 @@
 import {createPool} from 'mysql';
 import * as dotenv from 'dotenv';
-const  ormConfig = require('../../ormconfig');
-import { createConnection } from "typeorm";
+import {createConnection} from "typeorm";
+
+const developmentORMConfig = require('../../ormconfig');
+const productionORMConfig = require('../../production-ormconfig');
+
 dotenv.config();
 
 
@@ -14,8 +17,8 @@ export const connectionPool = createPool({
     connectionLimit: 10
 });
 
-export const ormConnectionPool = createConnection(ormConfig);
-export const jwtSecret ={
+export const ormConnectionPool = createConnection(process.env.ENV === "PROD" ? productionORMConfig : developmentORMConfig);
+export const jwtSecret = {
     jwtSecret: process.env.JWT_SECRET || "User123",
     expire: process.env.TOKEN_EXPIRE || "1h"
 };
