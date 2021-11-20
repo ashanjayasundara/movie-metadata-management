@@ -156,3 +156,17 @@ docker pull ashanust/movie-metadata-management:latest
 docker-compose -f {compose file location} up
 ------------------
 https://raw.githubusercontent.com/ashanjayasundara/movie-metadata-management/master/docker-compose.yml[sample composor file]
+
+Environment Variables
+^^^^^^^^^^^^^^^^^^^^^
+[options="header"]
+|=======================
+|Variable|Usage | Default Value
+|SERVER_PORT|Backend service running port|5000
+|DB_PORT | Database running port | 3306
+|DB_HOST | Database hosted location | localhost
+|DB_USER | Database login user | root
+|DB_PASS | Database login password | root
+|DB_SCHEME | Database scheme | axinoms
+|JWT_SECRET| Token parser secret key | User123
+|TOKEN_EXPIRE| Token expiration period | 1h
